@@ -129,7 +129,7 @@ func (self *ITOpsChaincode) addIncident(stub shim.ChaincodeStubInterface, incide
 	var customEvent = "{eventType: 'addincident', description:" + string(incidentRecord.IncidentID) + "' Successfully created'}"
 	err = stub.SetEvent("evtSender", []byte(customEvent))
 	if err != nil {
-		return nil, err
+		return !success, err
 	}
 
 	return success, nil
@@ -159,7 +159,7 @@ func (self *ITOpsChaincode) updateIncident(stub shim.ChaincodeStubInterface, inc
 	var customEvent = "{eventType: 'incidentUpdate', description:" + string(incidentRecord.IncidentID) + "' Successfully updated status'}"
 	err = stub.SetEvent("evtSender", []byte(customEvent))
 	if err != nil {
-		return nil, err
+		return !success, err
 	}
 
 	return success, nil
