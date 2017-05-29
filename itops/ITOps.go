@@ -16,6 +16,12 @@ type ITOpsChaincode struct {
 
 }
 
+type customEvent struct {
+	Type       string `json:"type"`
+	Decription string `json:"description"`
+}
+
+
 func (self *ITOpsChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	fmt.Println("[ITOpsChaincode]: Init - Start")
@@ -57,6 +63,7 @@ func (self *ITOpsChaincode) Invoke(stub shim.ChaincodeStubInterface, function st
 	}
 
 	fmt.Println("[ITOpsChaincode]: Invoke - End")
+
 
 	return nil, nil
 }
@@ -119,6 +126,11 @@ func (self *ITOpsChaincode) addIncident(stub shim.ChaincodeStubInterface, incide
 	fmt.Println()
 
 	fmt.Println("[ITOpsChaincode]: addIncident - End")
+	var customEvent = "{eventType: 'addincident', description:" + string(incidentRecord.IncidentID) + "' Successfully created'}"
+	err = stub.SetEvent("evtSender", []byte(customEvent))
+	if err != nil {
+		return nil, err
+	}
 
 	return success, nil
 }
@@ -144,6 +156,11 @@ func (self *ITOpsChaincode) updateIncident(stub shim.ChaincodeStubInterface, inc
 	fmt.Printf("[ITOpsChaincode]: updateIncident - Incident record updated. Incident Id : %s", string(incidentRecord.IncidentID))
 	fmt.Println()
 	fmt.Println("[ITOpsChaincode]: updateIncident - End")
+	var customEvent = "{eventType: 'incidentUpdate', description:" + string(incidentRecord.IncidentID)) + "' Successfully updated status'}"
+	err = stub.SetEvent("evtSender", []byte(customEvent))
+	if err != nil {
+		return nil, err
+	}
 
 	return success, nil
 }
