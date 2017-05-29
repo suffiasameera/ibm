@@ -156,7 +156,7 @@ func (self *ITOpsChaincode) updateIncident(stub shim.ChaincodeStubInterface, inc
 	fmt.Printf("[ITOpsChaincode]: updateIncident - Incident record updated. Incident Id : %s", string(incidentRecord.IncidentID))
 	fmt.Println()
 	fmt.Println("[ITOpsChaincode]: updateIncident - End")
-	var customEvent = "{eventType: 'incidentUpdate', description:" + string(incidentRecord.IncidentID)) + "' Successfully updated status'}"
+	var customEvent = "{eventType: 'incidentUpdate', description:" + string(incidentRecord.IncidentID) + "' Successfully updated status'}"
 	err = stub.SetEvent("evtSender", []byte(customEvent))
 	if err != nil {
 		return nil, err
