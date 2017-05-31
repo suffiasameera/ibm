@@ -168,7 +168,7 @@ func (self *ITOpsChaincode) updateIncident(stub shim.ChaincodeStubInterface, inc
 
 func (self *ITOpsChaincode) getIncident(stub shim.ChaincodeStubInterface, incidentID string) (string, error) {
 
-	fmt.Println("[ITOpsChaincode]: updateIncident - Start")
+	fmt.Println("[ITOpsChaincode]: getIncident - Start")
 	if incidentID == "" {
 		return "", errors.New("Incident ID expected")
 	}
@@ -176,12 +176,12 @@ func (self *ITOpsChaincode) getIncident(stub shim.ChaincodeStubInterface, incide
 	incidentRecordJSON, err := services.RetrieveIncident(stub, incidentID)
 
 	if (err != nil)  {
-		return "", fmt.Errorf("Error in rtrieving Incident record.")
+		return "", fmt.Errorf("Error in retrieving Incident record.")
 	}
 
-	fmt.Printf("[ITOpsChaincode]: updateIncident - Incident record retrieved. Incident Id : %s", string(incidentID))
+	fmt.Printf("[ITOpsChaincode]: getIncident - Incident record retrieved. Incident Id : %s ", string(incidentID), string(incidentRecordJSON))
 	fmt.Println()
-	fmt.Println("[ITOpsChaincode]: updateIncident - Start")
+	fmt.Println("[ITOpsChaincode]: getIncident - End")
 	return incidentRecordJSON, nil
 }
 
