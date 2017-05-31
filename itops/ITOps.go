@@ -16,12 +16,6 @@ type ITOpsChaincode struct {
 
 }
 
-type customEvent struct {
-	Type       string `json:"type"`
-	Decription string `json:"description"`
-}
-
-
 func (self *ITOpsChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	fmt.Println("[ITOpsChaincode]: Init - Start")
@@ -110,7 +104,7 @@ func (self *ITOpsChaincode) addIncident(stub shim.ChaincodeStubInterface, incide
 	fmt.Println("[ITOpsChaincode]: addIncident - Start")
 
 	var incidentRecord data.IncidentDO
-	unmarshalErr := json.Unmarshal([]byte(string(incidentJSON)), &incidentRecord)
+	unmarshalErr := json.Unmarshal([]byte(incidentJSON), &incidentRecord)
 
 	if (unmarshalErr != nil) {
 		return false, fmt.Errorf("[ITOpsChaincode]: addIncident - Error in unmarshalling JSON string to Incident record.")
@@ -126,11 +120,6 @@ func (self *ITOpsChaincode) addIncident(stub shim.ChaincodeStubInterface, incide
 	fmt.Println()
 
 	fmt.Println("[ITOpsChaincode]: addIncident - End")
-	var customEvent = "{eventType: 'addincident', description:" + string(incidentRecord.IncidentID) + "' Successfully created'}"
-	err = stub.SetEvent("evtSender", []byte(customEvent))
-	if err != nil {
-		return !success, err
-	}
 
 	return success, nil
 }
@@ -141,7 +130,7 @@ func (self *ITOpsChaincode) updateIncident(stub shim.ChaincodeStubInterface, inc
 	fmt.Println("[ITOpsChaincode]: updateIncident - Start")
 
 	var incidentRecord data.IncidentDO
-	unmarshalErr := json.Unmarshal([]byte(string(incidentJSON)), &incidentRecord)
+	unmarshalErr := json.Unmarshal([]byte(incidentJSON), &incidentRecord)
 
 	if (unmarshalErr != nil) {
 		return false, fmt.Errorf("[ITOpsChaincode]: updateIncident - Error in unmarshalling JSON string to Incident record.")
@@ -156,11 +145,6 @@ func (self *ITOpsChaincode) updateIncident(stub shim.ChaincodeStubInterface, inc
 	fmt.Printf("[ITOpsChaincode]: updateIncident - Incident record updated. Incident Id : %s", string(incidentRecord.IncidentID))
 	fmt.Println()
 	fmt.Println("[ITOpsChaincode]: updateIncident - End")
-	var customEvent = "{eventType: 'incidentUpdate', description:" + string(incidentRecord.IncidentID) + "' Successfully updated status'}"
-	err = stub.SetEvent("evtSender", []byte(customEvent))
-	if err != nil {
-		return !success, err
-	}
 
 	return success, nil
 }
@@ -179,7 +163,7 @@ func (self *ITOpsChaincode) getIncident(stub shim.ChaincodeStubInterface, incide
 		return "", fmt.Errorf("Error in retrieving Incident record.")
 	}
 
-	fmt.Printf("[ITOpsChaincode]: getIncident - Incident record retrieved. Incident Id : %s and its recored : %s", string(incidentID), string(incidentRecordJSON))
+	fmt.Printf("[ITOpsChaincode]: getIncident - Incident record retrieved. Incident Id : %s and its recored : %s", incidentID, incidentRecordJSON)
 	fmt.Println()
 	fmt.Println("[ITOpsChaincode]: getIncident - End")
 	return incidentRecordJSON, nil
