@@ -104,12 +104,15 @@ func (self *ITOpsChaincode) addIncident(stub shim.ChaincodeStubInterface, incide
 	fmt.Println("[ITOpsChaincode]: addIncident - Start")
 
 	var incidentRecord data.IncidentDO
+	
 	unmarshalErr := json.Unmarshal([]byte(incidentJSON), &incidentRecord)
 
 	if (unmarshalErr != nil) {
 		return false, fmt.Errorf("[ITOpsChaincode]: addIncident - Error in unmarshalling JSON string to Incident record.")
 	}
-
+	
+	fmt.Errorf("[ITOpsChaincode]: addIncident - Unmarshalled sucessfully!")
+		   
 	success, err := services.CreateIncident(stub, incidentRecord)
 
 	if ((err != nil) || (!success)) {
