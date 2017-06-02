@@ -53,7 +53,8 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	}
 
 	incidentJSON := string(incidentRecordBytes)
-
+	fmt.Println("Incident record is:  ", incidentJSON)
+		    
 	success, err := stub.InsertRow("INCIDENT", shim.Row{
 		Columns: []*shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentID}},
