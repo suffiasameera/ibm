@@ -16,7 +16,7 @@ type IncidentDO struct {
 	Severity         		string `json:"severity"` //Sevirty of the Incident
 	Status							string `json:"status"` //Status of the incident record
 	RefIncidentID 			string `json:"refIncidentID"` //Id of the incident based on which current record is created
-	OriginalIncidentID 	string `json:"originalIncidentIDd"` //Id of the original incident record
+	OriginalIncidentID 	string `json:"originalIncidentID"` //Id of the original incident record
 	ParticipantIDFrom		string `json:"participantIDFrom"` //ID of the participant who originate
 	ParticipantIDTo			string `json:"participantIDTo"` //ID of the participant intended to
 	ContactEmail 				string `json:"contactEmail"` //Emain ID of the contact
