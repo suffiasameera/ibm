@@ -86,6 +86,7 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	}
 
 	incidentJSON := string(incidentRecordBytes)
+	fmt.Println("Incident record is:  ", incidentJSON)
 
 	success, err := stub.ReplaceRow("INCIDENT", shim.Row{
 		Columns: []*shim.Column{
@@ -114,7 +115,7 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 */
 func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (string, error) {
 
-	fmt.Println("Retrieveing Incident record. Incident Id : [%s]", string(incidentId))
+	fmt.Println("Retrieving Incident record. Incident Id : [%s]", string(incidentId))
 
 	var columns []shim.Column
 	incidentIdColumn := shim.Column{Value: &shim.Column_String_{String_: incidentId}}
@@ -122,9 +123,9 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	row, err := stub.GetRow("INCIDENT", columns)
 
 	if err != nil {
-		fmt.Printf("Error retriving Incident record [%s]: [%s]", string(incidentId), err)
+		fmt.Printf("Error retrieving Incident record [%s]: [%s]", string(incidentId), err)
 		fmt.Println()
-		return "", fmt.Errorf("Error retriving Incident record [%s]: [%s]", string(incidentId), err)
+		return "", fmt.Errorf("Error retrieving Incident record [%s]: [%s]", string(incidentId), err)
 	}
 
 	fmt.Printf("Row - [%s]", row)
