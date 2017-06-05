@@ -142,7 +142,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	
 	bytes, err := stub.GetState(incidentId)
 	if err != nil {
-		fmt.Printf("Could not fetch loan application with id "+incidentId+" from ledger", err)
+		fmt.Printf("Could not fetch record with id " + incidentId + " from ledger", err)
 		return "", fmt.Errorf("Error in fetching : ", err)
 	}
 	return string(bytes), nil
