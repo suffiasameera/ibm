@@ -60,7 +60,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 		return false, fmt.Printf("Error in storing.")
     	}
 
-		    
+	/*	    
 	success, err := stub.InsertRow("INCIDENT", shim.Row{
 		Columns: []*shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentID}},
@@ -68,7 +68,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 
 	if ((err != nil) || (!success)) {
 		return false, fmt.Errorf("Error in creating Incident record.")
-	}
+	}*/
 
 	// if (!(success && (err == nil))) {
 	// 	return nil, fmt.Errorf("Error in creating Incident record.")
@@ -121,7 +121,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 
 	fmt.Println("Retrieving Incident record. Incident Id : [%s]", string(incidentId))
 
-	var columns []shim.Column
+	/*var columns []shim.Column
 	incidentIdColumn := shim.Column{Value: &shim.Column_String_{String_: incidentId}}
 	columns = append(columns, incidentIdColumn)
 	row, err := stub.GetRow("INCIDENT", columns)
@@ -138,7 +138,15 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	var jsonRespBuffer bytes.Buffer
 	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
 	
-	return jsonRespBuffer.String(), nil
+	return jsonRespBuffer.String(), nil*/
+	
+	bytes, err := stub.GetState(incidentId)
+	if err != nil {
+		logger.Error("Could not fetch loan application with id "+incidentId+" from ledger", err)
+		return "", fmt.Errorf("Error in fetching : ", err)
+	}
+	return string(bytes), nil
+	
 }
 
 
