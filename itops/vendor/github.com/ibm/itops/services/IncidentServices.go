@@ -45,7 +45,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 
 	fmt.Println("Creating Incident record ...")
 
-	incidentRecordBytes, marshalErr := json.Marshal(incidentRecord)
+	incidentRecordBytes, marshalErr := json.Marshal(&incidentRecord)
 
 	if (marshalErr != nil) {
 		return false, fmt.Errorf("Error in marshalling Incident record.")
@@ -53,6 +53,13 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 
 	incidentJSON := string(incidentRecordBytes)
 	fmt.Println("Incident record is:  ", incidentJSON)
+	
+	err1 := stub.PutState(incidentRecord.IncidentID, incidentRecordBytes)
+    	if err1 != nil {
+       	   fmt.Println("Could not save changes", err1)
+		return false, fmt.Printf("Error in storing.")
+    	}
+
 		    
 	success, err := stub.InsertRow("INCIDENT", shim.Row{
 		Columns: []*shim.Column{
