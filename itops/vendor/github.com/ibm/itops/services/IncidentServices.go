@@ -27,8 +27,7 @@ func CreateIncidentTable(stub shim.ChaincodeStubInterface) (bool, error) {
 	// Create Incident table
 	err := stub.CreateTable("INCIDENT", []*shim.ColumnDefinition{
 		&shim.ColumnDefinition{Name: "incident_id", Type: shim.ColumnDefinition_STRING, Key: true},
-		&shim.ColumnDefinition{Name: "incident_record", Type: shim.ColumnDefinition_STRING, Key: true}
-	})
+		&shim.ColumnDefinition{Name: "incident_record", Type: shim.ColumnDefinition_STRING, Key: true}})
 
 	if err != nil {
 		return false, fmt.Errorf("Failed creating Incident table.")
@@ -58,9 +57,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	success, err := stub.InsertRow("INCIDENT", shim.Row{
 		Columns: []*shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentID}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}}
-		}
-	})
+			&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}}}})
 
 	if ((err != nil) || (!success)) {
 		return false, fmt.Errorf("Error in creating Incident record.")
