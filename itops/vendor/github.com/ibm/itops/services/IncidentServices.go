@@ -128,9 +128,13 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	fmt.Printf("Row - [%s]", row)
 	fmt.Println()
 
+	var s = ""
+	s = row.Columns[0]
+	fmt.Printf("The value of s: ", string(s))
+		
 	var jsonRespBuffer bytes.Buffer
 	jsonRespBuffer.WriteString(row.Columns[0].GetString_())
-
+	
 	return jsonRespBuffer.String(), nil
 }
 
