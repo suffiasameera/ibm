@@ -6,7 +6,7 @@ Licensed under the IBM India Pvt Ltd, Version 1.0 (the "License");
 package services
 
 import (
-	"bytes"
+	//"bytes"
 	"fmt"
 	"encoding/json"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
@@ -57,7 +57,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	err1 := stub.PutState(incidentRecord.IncidentID, incidentRecordBytes)
     	if err1 != nil {
        	   fmt.Println("Could not save changes", err1)
-		return false, fmt.Printf("Error in storing.")
+		return false, fmt.Errorf("Error in storing.")
     	}
 
 	/*	    
@@ -76,7 +76,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 
 	fmt.Println("Incident record created. Incident Id : [%s]", string(incidentRecord.IncidentID))
 
-	return success, nil
+	return true, nil
 }
 
 
@@ -142,7 +142,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	
 	bytes, err := stub.GetState(incidentId)
 	if err != nil {
-		logger.Error("Could not fetch loan application with id "+incidentId+" from ledger", err)
+		fmt.Printf("Could not fetch loan application with id "+incidentId+" from ledger", err)
 		return "", fmt.Errorf("Error in fetching : ", err)
 	}
 	return string(bytes), nil
