@@ -142,13 +142,6 @@ func (self *ITOpsChaincode) addIncident(stub shim.ChaincodeStubInterface, incide
 		return true, nil
 	}	
 
-
-	fmt.Printf("[ITOpsChaincode]: addIncident - Incident record created/updated. Incident Id : %s", string(incidentRecord.IncidentID))
-	fmt.Println()
-
-	fmt.Println("[ITOpsChaincode]: addIncident - End")
-
-	return success, nil
 }
 
 
