@@ -27,7 +27,7 @@ func CreateIncidentTable(stub shim.ChaincodeStubInterface) (bool, error) {
 	// Create Incident table
 	err := stub.CreateTable("INCIDENT", []*shim.ColumnDefinition{
 		&shim.ColumnDefinition{Name: "incident_id", Type: shim.ColumnDefinition_STRING, Key: true},
-		&shim.ColumnDefinition{Name: "incident_record", Type: shim.ColumnDefinition_STRING, Key: true}})
+		&shim.ColumnDefinition{Name: "incident_record", Type: shim.ColumnDefinition_STRING, Key: false}})
 
 	if err != nil {
 		return false, fmt.Errorf("Failed creating Incident table.")
@@ -54,13 +54,13 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	incidentJSON := string(incidentRecordBytes)
 	fmt.Println("Incident record is:  ", incidentJSON)
 	
-	err1 := stub.PutState(incidentRecord.IncidentID, incidentRecordBytes)
+	/*err1 := stub.PutState(incidentRecord.IncidentID, incidentRecordBytes)
     	if err1 != nil {
        	   fmt.Println("Could not save changes", err1)
 		return false, fmt.Errorf("Error in storing.")
-    	}
+    	}*/
 
-	/*	    
+		    
 	success, err := stub.InsertRow("INCIDENT", shim.Row{
 		Columns: []*shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentID}},
@@ -68,7 +68,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 
 	if ((err != nil) || (!success)) {
 		return false, fmt.Errorf("Error in creating Incident record.")
-	}*/
+	}
 
 	// if (!(success && (err == nil))) {
 	// 	return nil, fmt.Errorf("Error in creating Incident record.")
@@ -121,7 +121,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 
 	fmt.Println("Retrieving Incident record. Incident Id : [%s]", string(incidentId))
 
-	/*var columns []shim.Column
+	var columns []shim.Column
 	incidentIdColumn := shim.Column{Value: &shim.Column_String_{String_: incidentId}}
 	columns = append(columns, incidentIdColumn)
 	row, err := stub.GetRow("INCIDENT", columns)
@@ -138,14 +138,14 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	var jsonRespBuffer bytes.Buffer
 	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
 	
-	return jsonRespBuffer.String(), nil*/
+	return jsonRespBuffer.String(), nil
 	
-	bytes, err := stub.GetState(incidentId)
+	/*bytes, err := stub.GetState(incidentId)
 	if err != nil {
 		fmt.Printf("Could not fetch record with id " + incidentId + " from ledger", err)
 		return "", fmt.Errorf("Error in fetching : ", err)
 	}
-	return string(bytes), nil
+	return string(bytes), nil*/
 	
 }
 
