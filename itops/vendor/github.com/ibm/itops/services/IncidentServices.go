@@ -135,7 +135,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	fmt.Printf("Row - [%s]", row)
 	fmt.Println()
 	
-	if row == "" {
+	if row == [{[]}] {
 		return "", fmt.Errorf("Error in retrieving Incident record %s ", string(incidentId))
 	}		
 
