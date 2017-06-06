@@ -6,7 +6,7 @@ Licensed under the IBM India Pvt Ltd, Version 1.0 (the "License");
 package services
 
 import (
-	//"bytes"
+	"bytes"
 	"fmt"
 	"encoding/json"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
