@@ -115,7 +115,7 @@ func (self *ITOpsChaincode) addIncident(stub shim.ChaincodeStubInterface, incide
 	
 	retString, err1 := self.getIncident(stub, string(incidentRecord.IncidentID))
 
-	if ((err1 != nil) || (!retString)) {
+	if ((err1 != nil) || (retString == "")) {
 		fmt.Printf("[ITOpsChaincode]: addIncident - incidentID not found. Safe to add.")
 		success, err := services.CreateIncident(stub, incidentRecord)
 
