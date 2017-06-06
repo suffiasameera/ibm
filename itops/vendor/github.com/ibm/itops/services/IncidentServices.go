@@ -20,7 +20,7 @@ import (
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 */
 
-func CreateIncidentTable(stub shim.ChaincodeStubInterface) (bool, error) {
+/*func CreateIncidentTable(stub shim.ChaincodeStubInterface) (bool, error) {
 
 	fmt.Println("Creating Incident Table ...")
 
@@ -36,7 +36,7 @@ func CreateIncidentTable(stub shim.ChaincodeStubInterface) (bool, error) {
 	fmt.Println("Incident table initialization done successfully... !!! ")
 
 	return true, nil
-}
+}*/
 
 /*
 	Create Incident record
@@ -150,15 +150,14 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 }
 
 
-/*
 
-func CreateIncidentTable(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func CreateIncidentTable(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	fmt.Println("Creating Incident Table ...")
 
-	if len(args) != 0 {
+	/*if len(args) != 0 {
 		return nil, fmt.Errorf("Incorrect number of arguments. Expecting 0")
-	}
+	}*/
 
 	// Create Incident table
 	err := stub.CreateTable("INCIDENT", []*shim.ColumnDefinition{
@@ -186,4 +185,3 @@ func CreateIncidentTable(stub *shim.ChaincodeStub, args []string) ([]byte, error
 	return nil, nil
 }
 
-*/
