@@ -111,36 +111,19 @@ func (self *ITOpsChaincode) addIncident(stub shim.ChaincodeStubInterface, incide
 		return false, fmt.Errorf("[ITOpsChaincode]: addIncident - Error in unmarshalling JSON string to Incident record.")
 	}
 		
-	fmt.Printf("[ITOpsChaincode]: checking if it already exists...")
+	success, err := services.CreateIncident(stub, incidentRecord)
+
+	if ((err != nil) || (!success)) {
+		return false, fmt.Errorf("[ITOpsChaincode]: addIncident - Error in creating Incident record.")
+	}
+
+	fmt.Printf("[ITOpsChaincode]: addIncident - Incident record created. Incident Id : %s", string(incidentRecord.IncidentID))
+	fmt.Println()
+
+	fmt.Println("[ITOpsChaincode]: addIncident - End")
+
+	return success, nil
 	
-	retString, err1 := self.getIncident(stub, string(incidentRecord.IncidentID))
-
-	if ((err1 != nil) || (retString == "")) {
-		fmt.Printf("[ITOpsChaincode]: addIncident - incidentID not found. Safe to add.")
-		success, err := services.CreateIncident(stub, incidentRecord)
-
-		if ((err != nil) || (!success)) {
-			return false, fmt.Errorf("[ITOpsChaincode]: addIncident - Error in creating Incident record.")
-		}
-		
-		fmt.Printf("[ITOpsChaincode]: addIncident - Incident record created. Incident Id : %s", string(incidentRecord.IncidentID))
-	
-		fmt.Println("[ITOpsChaincode]: addIncident - End")
-
-		return success, nil
-		
-	} else {
-		fmt.Printf("[ITOpsChaincode]: addIncident - incidentID exists! Updating...")
-		retString2, err2 := self.updateIncident(stub, incidentJSON)
-		
-		if ((err2 != nil) || (!retString2)) {
-			return false, fmt.Errorf("[ITOpsChaincode]: addIncident - Error in updating Incident record.")
-		}
-		fmt.Printf("[ITOpsChaincode]: addIncident - Incident record updated. Incident Id : %s", string(incidentRecord.IncidentID))
-		fmt.Println("[ITOpsChaincode]: addIncident - End")
-
-		return true, nil
-	}	
 
 }
 
