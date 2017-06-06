@@ -111,7 +111,7 @@ func (self *ITOpsChaincode) addIncident(stub shim.ChaincodeStubInterface, incide
 		return false, fmt.Errorf("[ITOpsChaincode]: addIncident - Error in unmarshalling JSON string to Incident record.")
 	}
 	
-	fmt.Errorf("[ITOpsChaincode]: addIncident - Unmarshalled sucessfully!")
+	fmt.Printf("[ITOpsChaincode]: addIncident - Unmarshalled sucessfully!")
 		   
 	success, err := services.CreateIncident(stub, incidentRecord)
 
@@ -157,13 +157,13 @@ func (self *ITOpsChaincode) getIncident(stub shim.ChaincodeStubInterface, incide
 
 	fmt.Println("[ITOpsChaincode]: getIncident - Start")
 	if incidentID == "" {
-		return "", errors.New("Incident ID expected")
+		return "", errors.New("[ITOpsChaincode]: Incident ID expected")
 	}
 
 	incidentRecordJSON, err := services.RetrieveIncident(stub, incidentID)
 
 	if (err != nil)  {
-		return "", fmt.Errorf("Error in retrieving Incident record.")
+		return "", fmt.Errorf("[ITOpsChaincode]: Error in retrieving Incident record.")
 	}
 
 	fmt.Printf("[ITOpsChaincode]: getIncident - Incident record retrieved. Incident Id : %s and its recored : %s", incidentID, incidentRecordJSON)
