@@ -173,7 +173,7 @@ func CreateIncidentTable(stub shim.ChaincodeStubInterface, args []string) ([]byt
 		&shim.ColumnDefinition{Name: "contact_email", Type: shim.ColumnDefinition_STRING, Key: true},
 		&shim.ColumnDefinition{Name: "created_date", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "expected_close_date", Type: shim.ColumnDefinition_STRING, Key: false},
-		&shim.ColumnDefinition{Name: "actual_close_date", Type: shim.ColumnDefinition_STRING, Key: false}
+		&shim.ColumnDefinition{Name: "actual_close_date", Type: shim.ColumnDefinition_STRING, Key: false},
 	})
 
 	if err != nil {
