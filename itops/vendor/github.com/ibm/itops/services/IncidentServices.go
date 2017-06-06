@@ -45,7 +45,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 
 	fmt.Println("Creating Incident record ...")
 
-	incidentRecordBytes, marshalErr := json.Marshal(&incidentRecord)
+	incidentRecordBytes, marshalErr := json.Marshal(incidentRecord)
 
 	if (marshalErr != nil) {
 		return false, fmt.Errorf("Error in marshalling Incident record.")
