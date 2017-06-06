@@ -135,13 +135,12 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	fmt.Printf("Row - [%s]", row)
 	fmt.Println()
 	
-	if row == [{[]}] {
+	var jsonRespBuffer bytes.Buffer
+	err1 := jsonRespBuffer.WriteString(row.Columns[1].GetString_())
+	
+	if (err1 != nil) {
 		return "", fmt.Errorf("Error in retrieving Incident record %s ", string(incidentId))
 	}		
-
-	var jsonRespBuffer bytes.Buffer
-	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
-	
 	return jsonRespBuffer.String(), nil
 	
 	/*bytes, err := stub.GetState(incidentId)
