@@ -122,6 +122,13 @@ func (self *ITOpsChaincode) addIncident(stub shim.ChaincodeStubInterface, incide
 		if ((err != nil) || (!success)) {
 			return false, fmt.Errorf("[ITOpsChaincode]: addIncident - Error in creating Incident record.")
 		}
+		
+		fmt.Printf("[ITOpsChaincode]: addIncident - Incident record created. Incident Id : %s", string(incidentRecord.IncidentID))
+	
+		fmt.Println("[ITOpsChaincode]: addIncident - End")
+
+		return success, nil
+		
 	} else {
 		fmt.Printf("[ITOpsChaincode]: addIncident - incidentID exists! Updating...")
 		retString2, err2 := self.updateIncident(stub, incidentJSON)
@@ -129,6 +136,10 @@ func (self *ITOpsChaincode) addIncident(stub shim.ChaincodeStubInterface, incide
 		if ((err2 != nil) || (!retString2)) {
 			return false, fmt.Errorf("[ITOpsChaincode]: addIncident - Error in updating Incident record.")
 		}
+		fmt.Printf("[ITOpsChaincode]: addIncident - Incident record updated. Incident Id : %s", string(incidentRecord.IncidentID))
+		fmt.Println("[ITOpsChaincode]: addIncident - End")
+
+		return true, nil
 	}	
 
 
