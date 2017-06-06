@@ -151,7 +151,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 
 
 
-func CreateIncidentTable(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
 
 	fmt.Println("Creating Incident Table ...")
 
