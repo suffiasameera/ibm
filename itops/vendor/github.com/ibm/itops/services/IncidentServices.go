@@ -75,9 +75,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ContactEmail}},
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.CreatedDate}},
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ExpectedCloseDate}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ActualCloseDate}},
-		}
-	})
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ActualCloseDate}}}})
 
 	if ((err != nil) || (!success)) {
 		return false, fmt.Errorf("Error in creating Incident record.")
