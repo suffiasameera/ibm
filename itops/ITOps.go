@@ -166,7 +166,7 @@ func (self *ITOpsChaincode) getIncident(stub shim.ChaincodeStubInterface, incide
 		return "", fmt.Errorf("[ITOpsChaincode]: Error in retrieving Incident record.")
 	}
 
-	fmt.Printf("[ITOpsChaincode]: getIncident - Incident record retrieved. Incident Id : %s and its recored : %s", incidentID, incidentRecordJSON)
+	fmt.Printf("[ITOpsChaincode]: getIncident - Incident record retrieved. Incident Id : %s and its record : %s", incidentID, incidentRecordJSON)
 	fmt.Println()
 	fmt.Println("[ITOpsChaincode]: getIncident - End")
 	return incidentRecordJSON, nil
