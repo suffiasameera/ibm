@@ -77,15 +77,24 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ExpectedCloseDate}},
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ActualCloseDate}}}})
 
-	if ((err != nil) || (!success)) {
+	if (err != nil) {
 		return false, fmt.Errorf("Error in creating Incident record.")
+	}
+
+	if (!success) {
+		fmt.Printf("Error in creating Incident record. Row with given key already exists! Updating...")
+		success, err := UpdateIncident(stub, incidentRecord)
+		if ((!success) || (err != nil)) {
+	 		return nil, fmt.Errorf("Error in updating Incident record.")
+		}
+		
 	}
 
 	// if (!(success && (err == nil))) {
 	// 	return nil, fmt.Errorf("Error in creating Incident record.")
 	// }
 
-	fmt.Println("Incident record created. Incident Id : [%s]", string(incidentRecord.IncidentID))
+	fmt.Println("Incident record created/updated. Incident Id : [%s]", string(incidentRecord.IncidentID))
 
 	return true, nil
 }
