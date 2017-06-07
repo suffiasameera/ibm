@@ -173,7 +173,7 @@ func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
 	// Create Incident table
 	err := stub.CreateTable("INCIDENT", []*shim.ColumnDefinition{
 		&shim.ColumnDefinition{Name: "incident_id", Type: shim.ColumnDefinition_STRING, Key: true},
-		&shim.ColumnDefinition{Name: "incident_title", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "incident_title", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "incident_type", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "severity", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "status", Type: shim.ColumnDefinition_STRING, Key: false},
@@ -181,7 +181,7 @@ func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
 		&shim.ColumnDefinition{Name: "original_incident_id", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "participant_id_from", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "participant_id_to", Type: shim.ColumnDefinition_STRING, Key: false},
-		&shim.ColumnDefinition{Name: "contact_email", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "contact_email", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "created_date", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "expected_close_date", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "actual_close_date", Type: shim.ColumnDefinition_STRING, Key: false},
