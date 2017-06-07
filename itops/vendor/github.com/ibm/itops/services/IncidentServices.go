@@ -85,7 +85,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 		fmt.Printf("Error in creating Incident record. Row with given key already exists! Updating...")
 		success, err := UpdateIncident(stub, incidentRecord)
 		if ((!success) || (err != nil)) {
-	 		return nil, fmt.Errorf("Error in updating Incident record.")
+	 		return false, fmt.Errorf("Error in updating Incident record.")
 		}
 		
 	}
