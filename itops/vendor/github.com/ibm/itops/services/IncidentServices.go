@@ -64,7 +64,20 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	success, err := stub.InsertRow("INCIDENT", shim.Row{
 		Columns: []*shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentID}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}}}})
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentTitle}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentType}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.Severity}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.Status}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.RefIncidentID}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.OriginalIncidentID}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ParticipantIDFrom}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ParticipantIDTo}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ContactEmail}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.CreatedDate}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ExpectedCloseDate}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ActualCloseDate}},
+		}
+	})
 
 	if ((err != nil) || (!success)) {
 		return false, fmt.Errorf("Error in creating Incident record.")
@@ -162,15 +175,15 @@ func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
 	// Create Incident table
 	err := stub.CreateTable("INCIDENT", []*shim.ColumnDefinition{
 		&shim.ColumnDefinition{Name: "incident_id", Type: shim.ColumnDefinition_STRING, Key: true},
-		&shim.ColumnDefinition{Name: "incident_title", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "incident_title", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "incident_type", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "severity", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "status", Type: shim.ColumnDefinition_STRING, Key: false},
-		&shim.ColumnDefinition{Name: "ref_incident_id", Type: shim.ColumnDefinition_STRING, Key: true},
-		&shim.ColumnDefinition{Name: "original_incident_id", Type: shim.ColumnDefinition_STRING, Key: true},
-		&shim.ColumnDefinition{Name: "participant_id_from", Type: shim.ColumnDefinition_STRING, Key: true},
-		&shim.ColumnDefinition{Name: "participant_id_to", Type: shim.ColumnDefinition_STRING, Key: true},
-		&shim.ColumnDefinition{Name: "contact_email", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "ref_incident_id", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "original_incident_id", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "participant_id_from", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "participant_id_to", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "contact_email", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "created_date", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "expected_close_date", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "actual_close_date", Type: shim.ColumnDefinition_STRING, Key: false},
