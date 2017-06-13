@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"encoding/json"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"github.com/ibm/itops/data"
+	"github.com/ibm-it/itops/data"
 )
 
 var mapIncident = make(map[string]data.IncidentDo)
