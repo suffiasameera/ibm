@@ -183,8 +183,9 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 		fmt.Println("Key-value pairs: ", k, " : ", v)
 	}
 
-	if len(row) == 0
+	if len(row) == 0 {
 		return "", fmt.Errorf("Empty row!")
+	}
 
 	var jsonRespBuffer bytes.Buffer
 	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
