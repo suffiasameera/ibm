@@ -13,6 +13,7 @@ import (
 	"github.com/ibm/itops/data"
 )
 
+var mapIncident := make(map[string]data.IncidentDo)
 
 /*
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -97,7 +98,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	fmt.Println("Incident record created/updated. Incident Id : [%s]", string(incidentRecord.IncidentID))
 	fmt.Println("Adding to map!")
 	mapIncident[incidentRecord.IncidentID] = incidentRecord
-	mapIncident[incidentRecord.Title] = incidentRecord
+	mapIncident[incidentRecord.IncidentTitle] = incidentRecord
 	mapIncident[incidentRecord.Severity] = incidentRecord
 	mapIncident[incidentRecord.Status] = incidentRecord
 	mapIncident[incidentRecord.ContactEmail] = incidentRecord
@@ -227,10 +228,6 @@ func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
 	}
 
 	fmt.Println("Incident table initialization done successfully... !!! ")
-
-	fmt.Println("Creating map!")
-
-	mapIncident := make(map[string]data.IncidentDo)
 
 	return nil, nil
 }
