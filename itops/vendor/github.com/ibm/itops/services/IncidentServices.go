@@ -13,7 +13,7 @@ import (
 	"github.com/ibm/itops/data"
 )
 
-var mapIncident map[string]data.IncidentDo
+var mapIncident map[string]data.IncidentD
 
 /*
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
