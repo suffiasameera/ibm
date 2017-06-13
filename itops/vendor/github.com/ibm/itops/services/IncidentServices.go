@@ -183,7 +183,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 		fmt.Println("Key-value pairs: ", k, " : ", v)
 	}
 
-	if row == "{{[]}}" {
+	if str(row) == " " {
 		return "", fmt.Errorf("Empty row!")
 	}
 
