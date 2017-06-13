@@ -15,12 +15,13 @@ import (
 
 var mapIncident = map[string]data.IncidentDO{}
 
+
 /*
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 																				Incident Services
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 */
- 
+
 /*func CreateIncidentTable(stub shim.ChaincodeStubInterface) (bool, error) {
 
 	fmt.Println("Creating Incident Table ...")
@@ -107,7 +108,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	fmt.Println("Querying it!")
 	n := mapIncident[incidentRecord.Status]
 	fmt.Println("Value of status is: ", n)
-	
+
 	return true, nil
 }
 
@@ -182,6 +183,9 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 		fmt.Println("Key-value pairs: ", k, " : ", v)
 	}
 
+	if len(row) == 0
+		return "", fmt.Errorf("Empty row!")
+
 	var jsonRespBuffer bytes.Buffer
 	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
 
@@ -196,7 +200,9 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 
 }
 
-
+/*
+Creating the Incident table
+*/
 
 func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
 
