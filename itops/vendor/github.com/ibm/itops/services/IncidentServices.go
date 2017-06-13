@@ -20,7 +20,7 @@ var mapIncident = map[string]data.IncidentDO{}
 																				Incident Services
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 */
-
+ 
 /*func CreateIncidentTable(stub shim.ChaincodeStubInterface) (bool, error) {
 
 	fmt.Println("Creating Incident Table ...")
