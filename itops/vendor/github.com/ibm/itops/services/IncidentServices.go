@@ -174,6 +174,11 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 		fmt.Println()
 		return "", fmt.Errorf("Error retrieving Incident record [%s]: [%s]", string(incidentId), err)
 	}
+	
+	if (!row) {
+		
+		return "", fmt.Errorf("empty row!")
+	}
 
 	fmt.Printf("Row - [%s]", row)
 	fmt.Println()
@@ -181,10 +186,6 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	fmt.Println("Printing the map!")
 	for k, v := range mapIncident {
 		fmt.Println("Key-value pairs: ", k, " : ", v)
-	}
-
-	if row == " " {
-		return "", fmt.Errorf("Empty row!")
 	}
 
 	var jsonRespBuffer bytes.Buffer
