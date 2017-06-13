@@ -175,7 +175,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 		return "", fmt.Errorf("Error retrieving Incident record [%s]: [%s]", string(incidentId), err)
 	}
 	
-	if (!row) {
+	if row == nil {
 		
 		return "", fmt.Errorf("empty row!")
 	}
