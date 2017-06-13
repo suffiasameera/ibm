@@ -53,14 +53,14 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 
 	incidentJSON := string(incidentRecordBytes)
 	fmt.Println("Incident record is:  ", incidentJSON)
-	
+
 	/*err1 := stub.PutState(incidentRecord.IncidentID, incidentRecordBytes)
     	if err1 != nil {
        	   fmt.Println("Could not save changes", err1)
 		return false, fmt.Errorf("Error in storing.")
     	}*/
 
-		    
+
 	success, err := stub.InsertRow("INCIDENT", shim.Row{
 		Columns: []*shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentID}},
@@ -87,7 +87,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 		if ((!success) || (err != nil)) {
 	 		return false, fmt.Errorf("Error in updating Incident record.")
 		}
-		
+
 	}
 
 	// if (!(success && (err == nil))) {
@@ -95,7 +95,18 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	// }
 
 	fmt.Println("Incident record created/updated. Incident Id : [%s]", string(incidentRecord.IncidentID))
+	fmt.Println("Adding to map!")
+	mapIncident[incidentRecord.IncidentID] = incidentRecord
+	mapIncident[incidentRecord.Title] = incidentRecord
+	mapIncident[incidentRecord.Severity] = incidentRecord
+	mapIncident[incidentRecord.Status] = incidentRecord
+	mapIncident[incidentRecord.ContactEmail] = incidentRecord
+	fmt.Println("Added to map!")
 
+	fmt.Println("Querying it!")
+	n := mapIncident[incidentRecord.Status]
+	fmt.Println("Value of status is: ", n)
+	
 	return true, nil
 }
 
@@ -127,8 +138,8 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.CreatedDate}},
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ExpectedCloseDate}},
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ActualCloseDate}}}})
-		
-	
+
+
 	if ((err != nil) || (!success)) {
 		return false, fmt.Errorf("Error in updating Incident record.")
 	}
@@ -164,19 +175,24 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 
 	fmt.Printf("Row - [%s]", row)
 	fmt.Println()
-	
+
+	fmt.Println("Printing the map!")
+	for k, v := range mapIncident {
+		fmt.Println("Key-value pairs: ", k " : " v)
+	}
+
 	var jsonRespBuffer bytes.Buffer
 	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
-		
+
 	return jsonRespBuffer.String(), nil
-	
+
 	/*bytes, err := stub.GetState(incidentId)
 	if err != nil {
 		fmt.Printf("Could not fetch record with id " + incidentId + " from ledger", err)
 		return "", fmt.Errorf("Error in fetching : ", err)
 	}
 	return string(bytes), nil*/
-	
+
 }
 
 
@@ -212,6 +228,9 @@ func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
 
 	fmt.Println("Incident table initialization done successfully... !!! ")
 
+	fmt.Println("Creating map!")
+
+	mapIncident := make(map[string]data.incidentDo)
+
 	return nil, nil
 }
-
