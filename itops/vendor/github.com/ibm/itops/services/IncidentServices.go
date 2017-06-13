@@ -178,7 +178,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 
 	fmt.Println("Printing the map!")
 	for k, v := range mapIncident {
-		fmt.Println("Key-value pairs: ", k " : " v)
+		fmt.Println("Key-value pairs: ", k, " : ", v)
 	}
 
 	var jsonRespBuffer bytes.Buffer
@@ -230,7 +230,7 @@ func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
 
 	fmt.Println("Creating map!")
 
-	mapIncident := make(map[string]data.incidentDo)
+	mapIncident := make(map[string]data.IncidentDo)
 
 	return nil, nil
 }
