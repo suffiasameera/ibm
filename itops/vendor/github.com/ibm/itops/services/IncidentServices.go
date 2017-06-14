@@ -109,7 +109,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 			fmt.Println("Same Severity!")
 			val := mapIncident[incidentRecord.Severity]
 			//mapIncident[incidentRecord.Severity] = val + " " +incidentRecord
-			fmt.Println("Joined values: ", mapIncident[incidentRecord.Severity])
+			fmt.Println("Joined values: ", val, mapIncident[incidentRecord.Severity])
 			
 		case incidentRecord.Status:
 			fmt.Println("Same Status!")
