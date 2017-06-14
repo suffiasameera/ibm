@@ -165,6 +165,14 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	
 
 	fmt.Println("Incident record created/updated. Incident Id : [%s]", string(incidentRecord.IncidentID))
+	
+	var customEvent = "{eventType: 'Creation', description:" + incidentRecord.IncidentID + "' Successfully created'}"
+	errE := stub.SetEvent("evtSender", []byte(customEvent))
+    	if errE != nil {
+		return false, fmt.Errorf("Error in event 'create'.")
+    	}
+
+    	fmt.Println("Successfully saved changes")
 
 	return true, nil
 }
@@ -257,6 +265,14 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	}
 		
 	fmt.Println("Incident record updated. Incident Id : [%s]", string(incidentRecord.IncidentID))
+	
+	var customEvent = "{eventType: 'Update', description:" + incidentRecord.IncidentID + "' Successfully updated status'}"
+	errE := stub.SetEvent("evtSender", []byte(customEvent))
+	if errE != nil {
+		return false, fmt.Errorf("Error in event 'update'.")
+	}
+
+	fmt.Println("Successfully updated changes")
 
 	return true, nil
 }
