@@ -22,13 +22,13 @@ import (
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 */
 
-/*func CreateIncidentTable(stub shim.ChaincodeStubInterface) (bool, error) {
+func CreateIncidentTable(stub shim.ChaincodeStubInterface) (bool, error) {
 
 	fmt.Println("Creating Incident Table ...")
 
 	// Create Incident table
 	err := stub.CreateTable("INCIDENT", []*shim.ColumnDefinition{
-		&shim.ColumnDefinition{Name: "incident_id", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "incident_key_column", Type: shim.ColumnDefinition_STRING, Key: true},
 		&shim.ColumnDefinition{Name: "incident_record", Type: shim.ColumnDefinition_STRING, Key: false}})
 
 	if err != nil {
@@ -38,7 +38,7 @@ import (
 	fmt.Println("Incident table initialization done successfully... !!! ")
 
 	return true, nil
-}*/
+}
 
 /*
 	Create Incident record
@@ -63,27 +63,38 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
     	}*/
 
 
-	success, err := stub.InsertRow("INCIDENT", shim.Row{
+	success1, err1 := stub.InsertRow("INCIDENT", shim.Row{
 		Columns: []*shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentID}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentTitle}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentType}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.Severity}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.Status}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.RefIncidentID}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.OriginalIncidentID}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ParticipantIDFrom}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ParticipantIDTo}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ContactEmail}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.CreatedDate}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ExpectedCloseDate}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ActualCloseDate}}}})
-
-	if (err != nil) {
+			&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
+		},
+	})
+	
+	if (err1 != nil) {
 		return false, fmt.Errorf("Error in creating Incident record.")
 	}
 
-	if (!success) {
+	if (!success1) {
+		fmt.Printf("Error in creating Incident record. Row with given key already exists! Updating...")
+		success, err := UpdateIncident(stub, incidentRecord)
+		if ((!success) || (err != nil)) {
+	 		return false, fmt.Errorf("Error in updating Incident record.")
+		}
+
+	}	
+	
+	success2, err2 := stub.InsertRow("INCIDENT", shim.Row{
+		Columns: []*shim.Column{
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentTitle}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
+		},
+	})
+
+	if (err2 != nil) {
+		return false, fmt.Errorf("Error in creating Incident record.")
+	}
+
+	if (!success2) {
 		fmt.Printf("Error in creating Incident record. Row with given key already exists! Updating...")
 		success, err := UpdateIncident(stub, incidentRecord)
 		if ((!success) || (err != nil)) {
@@ -91,7 +102,67 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 		}
 
 	}
+	
+	success3, err3 := stub.InsertRow("INCIDENT", shim.Row{
+		Columns: []*shim.Column{
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.Severity}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
+		},
+	})	
+	
+	if (err3 != nil) {
+		return false, fmt.Errorf("Error in creating Incident record.")
+	}
 
+	if (!success3) {
+		fmt.Printf("Error in creating Incident record. Row with given key already exists! Updating...")
+		success, err := UpdateIncident(stub, incidentRecord)
+		if ((!success) || (err != nil)) {
+	 		return false, fmt.Errorf("Error in updating Incident record.")
+		}
+
+	}
+	
+	success4, err4 := stub.InsertRow("INCIDENT", shim.Row{
+		Columns: []*shim.Column{
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.Status}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
+		},
+	})	
+
+	if (err4 != nil) {
+		return false, fmt.Errorf("Error in creating Incident record.")
+	}
+
+	if (!success4) {
+		fmt.Printf("Error in creating Incident record. Row with given key already exists! Updating...")
+		success, err := UpdateIncident(stub, incidentRecord)
+		if ((!success) || (err != nil)) {
+	 		return false, fmt.Errorf("Error in updating Incident record.")
+		}
+
+	}
+	
+	success5, err5 := stub.InsertRow("INCIDENT", shim.Row{
+		Columns: []*shim.Column{
+			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ContactEmail}},
+			&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
+		},
+	})
+	
+	if (err5 != nil) {
+		return false, fmt.Errorf("Error in creating Incident record.")
+	}
+
+	if (!success5) {
+		fmt.Printf("Error in creating Incident record. Row with given key already exists! Updating...")
+		success, err := UpdateIncident(stub, incidentRecord)
+		if ((!success) || (err != nil)) {
+	 		return false, fmt.Errorf("Error in updating Incident record.")
+		}
+
+	}
+	
 	// if (!(success && (err == nil))) {
 	// 	return nil, fmt.Errorf("Error in creating Incident record.")
 	// }
@@ -117,19 +188,9 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	success, err := stub.ReplaceRow("INCIDENT", shim.Row{
 		Columns: []*shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentID}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentTitle}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentType}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.Severity}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.Status}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.RefIncidentID}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.OriginalIncidentID}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ParticipantIDFrom}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ParticipantIDTo}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ContactEmail}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.CreatedDate}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ExpectedCloseDate}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ActualCloseDate}}}})
-
+			&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
+		},
+	})
 
 	if ((err != nil) || (!success)) {
 		return false, fmt.Errorf("Error in updating Incident record.")
@@ -168,7 +229,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	fmt.Println()
 
 	var jsonRespBuffer bytes.Buffer
-	jsonRespBuffer.WriteString(row.Columns[7].GetString_())
+	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
 
 	return jsonRespBuffer.String(), nil
 
@@ -184,14 +245,14 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 /*
 Creating the Incident table
 */
-/*
-func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
+
+/*func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
 
 	fmt.Println("Creating Incident Table ...")
 
-	/*if len(args) != 0 {
-		return nil, fmt.Errorf("Incorrect number of arguments. Expecting 0")
-	}*/
+	//if len(args) != 0 {
+	//	return nil, fmt.Errorf("Incorrect number of arguments. Expecting 0")
+	//}
 
 	
 	err := stub.CreateTable("INCIDENT", []*shim.ColumnDefinition{
