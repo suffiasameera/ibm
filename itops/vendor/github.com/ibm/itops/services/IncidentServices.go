@@ -210,7 +210,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	}
 
 	var jsonRespBuffer bytes.Buffer
-	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
+	jsonRespBuffer.WriteString(row.Columns[7].GetString_())
 
 	return jsonRespBuffer.String(), nil
 
