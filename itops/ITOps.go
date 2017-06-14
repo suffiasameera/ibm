@@ -51,7 +51,7 @@ func (self *ITOpsChaincode) Invoke(stub shim.ChaincodeStubInterface, function st
 	if function == "addIncident" {
 		self.addIncident(stub, args[0])
 	} else if function == "updateIncident" {
-		self.updateIncident(stub, args[0])
+		self.updateIncident(stub, args[0], args[1])
 	} else {
 		return nil, errors.New("[ITOpsChaincode]: Invoke - Unknown Function invocation")
 	}
@@ -128,7 +128,7 @@ func (self *ITOpsChaincode) addIncident(stub shim.ChaincodeStubInterface, incide
 }
 
 
-func (self *ITOpsChaincode) updateIncident(stub shim.ChaincodeStubInterface, incidentJSON string) (bool, error) {
+func (self *ITOpsChaincode) updateIncident(stub shim.ChaincodeStubInterface, incidentJSON string, option string) (bool, error) {
 
 	fmt.Println("[ITOpsChaincode]: updateIncident - Start")
 
@@ -139,7 +139,7 @@ func (self *ITOpsChaincode) updateIncident(stub shim.ChaincodeStubInterface, inc
 		return false, fmt.Errorf("[ITOpsChaincode]: updateIncident - Error in unmarshalling JSON string to Incident record.")
 	}
 
-	success, err := services.UpdateIncident(stub, incidentRecord)
+	success, err := services.UpdateIncident(stub, incidentRecord, option)
 
 	if ((err != nil) || (!success)) {
 		return false, fmt.Errorf("[ITOpsChaincode]: updateIncident - Error in updating Incident record.")
