@@ -13,7 +13,7 @@ import (
 	"github.com/ibm/itops/data"
 )
 
-var mapIncident = map[string]data.IncidentDO{}
+//var mapIncident = map[string]data.IncidentDO{}
 
 
 /*
@@ -97,43 +97,6 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	// }
 
 	fmt.Println("Incident record created/updated. Incident Id : [%s]", string(incidentRecord.IncidentID))
-	fmt.Println("Adding to map!")
-
-	for key, _ := range mapIncident {
-		switch key {
-
-		case incidentRecord.IncidentTitle:
-			fmt.Println("Same Title!")
-
-		case incidentRecord.Severity:
-			fmt.Println("Same Severity!")
-			val := mapIncident[incidentRecord.Severity]
-			//mapIncident[incidentRecord.Severity] = val + " " +incidentRecord
-			fmt.Println("Joined values: ", val, mapIncident[incidentRecord.Severity])
-			
-		case incidentRecord.Status:
-			fmt.Println("Same Status!")
-			
-		case incidentRecord.ContactEmail:
-			fmt.Println("Same ContactEmail!")
-
-		default:
-			fmt.Println("")
-			
-		}
-	}
-		
-	
-	mapIncident[incidentRecord.IncidentID] = incidentRecord
-	mapIncident[incidentRecord.IncidentTitle] = incidentRecord
-	mapIncident[incidentRecord.Severity] = incidentRecord
-	mapIncident[incidentRecord.Status] = incidentRecord
-	mapIncident[incidentRecord.ContactEmail] = incidentRecord
-	fmt.Println("Added to map!")
-
-	fmt.Println("Querying it!")
-	n := mapIncident[incidentRecord.Status]
-	fmt.Println("Value of status is: ", n)
 
 	return true, nil
 }
@@ -204,11 +167,6 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	fmt.Printf("Row - [%s]", row)
 	fmt.Println()
 
-	fmt.Println("Printing the map!")
-	for k, v := range mapIncident {
-		fmt.Println("Key-value pairs: ", k, " : ", v)
-	}
-
 	var jsonRespBuffer bytes.Buffer
 	jsonRespBuffer.WriteString(row.Columns[7].GetString_())
 
@@ -226,7 +184,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 /*
 Creating the Incident table
 */
-
+/*
 func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
 
 	fmt.Println("Creating Incident Table ...")
@@ -235,7 +193,7 @@ func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
 		return nil, fmt.Errorf("Incorrect number of arguments. Expecting 0")
 	}*/
 
-	// Create Incident table
+	
 	err := stub.CreateTable("INCIDENT", []*shim.ColumnDefinition{
 		&shim.ColumnDefinition{Name: "incident_id", Type: shim.ColumnDefinition_STRING, Key: true},
 		&shim.ColumnDefinition{Name: "incident_title", Type: shim.ColumnDefinition_STRING, Key: false},
@@ -259,4 +217,4 @@ func CreateIncidentTable(stub shim.ChaincodeStubInterface) ([]byte, error) {
 	fmt.Println("Incident table initialization done successfully... !!! ")
 
 	return nil, nil
-}
+}*/
