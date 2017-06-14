@@ -163,9 +163,6 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 
 	}
 	
-	// if (!(success && (err == nil))) {
-	// 	return nil, fmt.Errorf("Error in creating Incident record.")
-	// }
 
 	fmt.Println("Incident record created/updated. Incident Id : [%s]", string(incidentRecord.IncidentID))
 
@@ -173,7 +170,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 }
 
 
-func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.IncidentDO) (bool, error) {
+func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.IncidentDO, option string) (bool, error) {
 	fmt.Println("Updating Incident record ...")
 
 	incidentRecordBytes, marshalErr := json.Marshal(incidentRecord)
@@ -185,21 +182,80 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	incidentJSON := string(incidentRecordBytes)
 	fmt.Println("Incident record is:  ", incidentJSON)
 
-	success, err := stub.ReplaceRow("INCIDENT", shim.Row{
-		Columns: []*shim.Column{
-			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentID}},
-			&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
-		},
-	})
+	switch option {
+		
+	case "IncidentID":
+		
+		success, err := stub.ReplaceRow("INCIDENT", shim.Row{
+			Columns: []*shim.Column{
+				&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentID}},
+				&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
+			},
+		})
 
-	if ((err != nil) || (!success)) {
-		return false, fmt.Errorf("Error in updating Incident record.")
+		if ((err != nil) || (!success)) {
+			return false, fmt.Errorf("Error in updating Incident record.")
+		}
+
+	case "IncidentTitle":
+		
+		success, err := stub.ReplaceRow("INCIDENT", shim.Row{
+			Columns: []*shim.Column{
+				&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentTitle}},
+				&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
+			},
+		})
+
+		if ((err != nil) || (!success)) {
+			return false, fmt.Errorf("Error in updating Incident record.")
+		}
+
+	case "Severity":
+		
+		success, err := stub.ReplaceRow("INCIDENT", shim.Row{
+			Columns: []*shim.Column{
+				&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.Severity}},
+				&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
+			},
+		})
+
+		if ((err != nil) || (!success)) {
+			return false, fmt.Errorf("Error in updating Incident record.")
+		}
+
+	case "Status":
+		
+		success, err := stub.ReplaceRow("INCIDENT", shim.Row{
+			Columns: []*shim.Column{
+				&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.Status}},
+				&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
+			},
+		})
+
+		if ((err != nil) || (!success)) {
+			return false, fmt.Errorf("Error in updating Incident record.")
+		}
+
+	case "ContactEmail":
+		
+		success, err := stub.ReplaceRow("INCIDENT", shim.Row{
+			Columns: []*shim.Column{
+				&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ContactEmail}},
+				&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
+			},
+		})
+
+		if ((err != nil) || (!success)) {
+			return false, fmt.Errorf("Error in updating Incident record.")
+		}
+		
+	default:		
+		
+		fmt.Println("Invalid option")
+		break;
+
 	}
-
-	// if (!(success && (err == nil))) {
-	// 	return nil, fmt.Errorf("Error in updating Incident record.")
-	// }
-
+		
 	fmt.Println("Incident record updated. Incident Id : [%s]", string(incidentRecord.IncidentID))
 
 	return success, nil
