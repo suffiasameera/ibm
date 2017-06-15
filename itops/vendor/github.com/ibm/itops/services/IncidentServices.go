@@ -283,7 +283,24 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	incidentIdColumn := shim.Column{Value: &shim.Column_String_{String_: incidentId}}
 	columns = append(columns, incidentIdColumn)
 	
-	col2 := shim.Column{Value: &shim.Column_String_{String_: "{"incidentID":"44","incidentTitle":"44It again","incidentType":"issue","severity":"444","status":"edited","refIncidentID":"22","originalIncidentID":"2248","participantIDFrom":"44SS","participantIDTo":"SufSam","contactEmail":"44ss44@gmail.com","createdDate":"2017-05-04T11:08:58Z","expectedCloseDate":"2017-05-11T11:08:58Z","actualCloseDate":"2017-05-07T11:08:58Z"}"}}
+		
+	row, err := stub.GetRow("INCIDENT", columns)
+
+	if err != nil {
+		fmt.Printf("Error retrieving Incident record [%s]: [%s]", string(incidentId), err)
+		fmt.Println()
+		return "", fmt.Errorf("Error retrieving Incident record [%s]: [%s]", string(incidentId), err)
+	}
+
+	fmt.Printf("Row - [%s]", row)
+	fmt.Println()
+	
+	var jsonRespBuffer bytes.Buffer
+	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
+
+	
+	
+	col2 := shim.Column{Value: &shim.Column_String_{String_: row.Columns[1].GetString_()}}
     	columns = append(columns, col2)	
 	
 	rowChannel, err := stub.GetRows("INCIDENT", columns)
