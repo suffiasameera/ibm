@@ -51,7 +51,7 @@ func (self *ITOpsChaincode) Invoke(stub shim.ChaincodeStubInterface, function st
 	if function == "addIncident" {
 		self.addIncident(stub, args[0])
 	} else if function == "updateIncident" {
-		self.updateIncident(stub, args[0], args[1], "")
+		self.updateIncident(stub, args[0], args[1], args[2])
 	} else {
 		return nil, errors.New("[ITOpsChaincode]: Invoke - Unknown Function invocation")
 	}
@@ -77,7 +77,7 @@ func (self *ITOpsChaincode) Query(stub shim.ChaincodeStubInterface, function str
 
 	// Handle different functions
 	if function == "getIncident" {
-		self.getIncident(stub, args[0])
+		self.getIncident(stub, args)
 	} else {
 		return nil, errors.New("[ITOpsChaincode]: Query - Unknown Function invocation")
 	}
@@ -160,20 +160,20 @@ func (self *ITOpsChaincode) updateIncident(stub shim.ChaincodeStubInterface, inc
 }
 
 
-func (self *ITOpsChaincode) getIncident(stub shim.ChaincodeStubInterface, incidentID string) (string, error) {
+func (self *ITOpsChaincode) getIncident(stub shim.ChaincodeStubInterface, args []string) (string, error) {
 
 	fmt.Println("[ITOpsChaincode]: getIncident - Start")
-	if incidentID == "" {
+	if args[0] == "" {
 		return "", errors.New("[ITOpsChaincode]: Incident ID expected")
 	}
 
-	incidentRecordJSON, err := services.RetrieveIncident(stub, incidentID)
+	incidentRecordJSON, err := services.RetrieveIncident(stub, args)
 
 	if (err != nil)  {
 		return "", fmt.Errorf("[ITOpsChaincode]: Error in retrieving Incident record.")
 	}
 
-	fmt.Printf("[ITOpsChaincode]: getIncident - Incident record retrieved. Incident Id : %s and its record : %s", incidentID, incidentRecordJSON)
+	fmt.Printf("[ITOpsChaincode]: getIncident - Incident record retrieved. Incident Id : %s and its record : %s", args[0], incidentRecordJSON)
 	fmt.Println()
 	fmt.Println("[ITOpsChaincode]: getIncident - End")
 	return incidentRecordJSON, nil
