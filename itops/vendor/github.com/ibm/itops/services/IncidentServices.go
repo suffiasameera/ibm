@@ -75,11 +75,50 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	}
 
 	if (!success1) {
-		fmt.Printf("Error in creating Incident record. Row with given key already exists! Updating...")
+		fmt.Printf("Error in creating Incident record. Row with given key already exists!")
+		fmt.Printf("Retrieving the existing record.")
+		incidentRecordJSON, errR := RetrieveIncident(stub, incidentRecord.incidentID)
+
+		if (errR != nil)  {
+			return false, fmt.Errorf("[ITOpsChaincode]: Error in retrieving Incident record.")
+		}
+		
+		//updating it
 		success, err := UpdateIncident(stub, incidentRecord, "IncidentID")
 		if ((!success) || (err != nil)) {
 	 		return false, fmt.Errorf("Error in updating Incident record.")
 		}
+		
+		//unmarshal incidentRecordJSON into struct and using the 4 fields update them
+		var incidentRecordOld data.IncidentDO
+		unmarshalErr := json.Unmarshal([]byte(incidentRecordJSON), &incidentRecordOld)
+
+		if (unmarshalErr != nil) {
+			return false, fmt.Errorf("[ITOpsChaincode]: CreateIncident - Error in unmarshalling JSON string to Incident record.")
+		}
+		
+		//update them individually
+		
+		success22, err22 := UpdateIncident(stub, incidentRecord, "IncidentTitle")
+		if ((!success22) || (err22 != nil)) {
+	 		return false, fmt.Errorf("Error in updating Incident record.")
+		}
+		
+		success33, err33 := UpdateIncident(stub, incidentRecord, "Severity")
+		if ((!success22) || (err22 != nil)) {
+	 		return false, fmt.Errorf("Error in updating Incident record.")
+		}
+		
+		success44, err44 := UpdateIncident(stub, incidentRecord, "Status")
+		if ((!success22) || (err22 != nil)) {
+	 		return false, fmt.Errorf("Error in updating Incident record.")
+		}
+		
+		success55, err55 := UpdateIncident(stub, incidentRecord, "ContactEmail")
+		if ((!success22) || (err22 != nil)) {
+	 		return false, fmt.Errorf("Error in updating Incident record.")
+		}
+		
 
 	}	
 	
