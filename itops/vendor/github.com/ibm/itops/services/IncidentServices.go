@@ -279,13 +279,15 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecordOld data.Inc
 */
 func RetrieveIncident(stub shim.ChaincodeStubInterface, args []string) (string, error) {
 
-	fmt.Println("Retrieving Incident record. Incident Id : [%s]", string(args[0]))
-	
+	fmt.Println("Retrieving Incident record.)
+	var jsonRespBuffer bytes.Buffer	
+		    
 	for i := 0; i < len(args); i++ {
 
+	fmt.Println("Retrieving Incident record. By: [%s]", string(args[i]))		
 	var columns []shim.Column
-	incidentIdColumn := shim.Column{Value: &shim.Column_String_{String_: args[i]}}
-	columns = append(columns, incidentIdColumn)
+	keyColumn := shim.Column{Value: &shim.Column_String_{String_: args[i]}}
+	columns = append(columns, keyColumn)
 	
 		
 	row, err := stub.GetRow("INCIDENT", columns)
@@ -299,27 +301,10 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, args []string) (string, 
 	fmt.Printf("Row - [%s]", row)
 	fmt.Println()
 	
-	var jsonRespBuffer bytes.Buffer
 	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
 	}		
 
-	return "", nil
-	/*
-	row, err := stub.GetRow("INCIDENT", columns)
-
-	if err != nil {
-		fmt.Printf("Error retrieving Incident record [%s]: [%s]", string(incidentId), err)
-		fmt.Println()
-		return "", fmt.Errorf("Error retrieving Incident record [%s]: [%s]", string(incidentId), err)
-	}
-
-	fmt.Printf("Row - [%s]", row)
-	fmt.Println()
-	
-	var jsonRespBuffer bytes.Buffer
-	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
-
-	return jsonRespBuffer.String(), nil*/
+	return jsonRespBuffer.String(), nil
 
 }
 
