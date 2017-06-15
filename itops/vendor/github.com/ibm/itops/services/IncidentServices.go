@@ -6,7 +6,7 @@ Licensed under the IBM India Pvt Ltd, Version 1.0 (the "License");
 package services
 
 import (
-	"bytes"
+	//"bytes"
 	"fmt"
 	"encoding/json"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
@@ -310,7 +310,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	
 	jsonRows, err := json.Marshal(rows)
   	if err != nil {
-    		return nil, errors.New("getRowsTableOne operation failed. Error marshaling JSON:")
+    		return "", fmt.Printf("getRows operation failed. Error marshaling JSON:")
   	}
 	
 	return string(jsonRows), nil
