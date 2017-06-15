@@ -279,7 +279,7 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecordOld data.Inc
 */
 func RetrieveIncident(stub shim.ChaincodeStubInterface, args []string) (string, error) {
 
-	fmt.Println("Retrieving Incident record.)
+	fmt.Println("Retrieving Incident record.")
 	var jsonRespBuffer bytes.Buffer	
 		    
 	for i := 0; i < len(args); i++ {
