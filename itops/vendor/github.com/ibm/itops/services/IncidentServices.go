@@ -72,7 +72,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 		fmt.Printf("Error in creating Incident record. Row with given key already exists!")
 		fmt.Printf("Retrieving the existing record.")
 		incidentRecordJSONOld := "{\"IncidentID\": \"22\", \"IncidentTitle\": \"It's an issue again\", \"IncidentType\": \"issue\", \"Severity\": \"2\", \"Status\": \"open\", \"RefIncidentID\": \"22\", \"OriginalIncidentID\": \"2248\", \"ParticipantIDFrom\": \"SS\", \"ParticipantIDTo\": \"SufSam\", \"ContactEmail\": \"ss@gmail.com\", \"CreatedDate\": \"2017-05-04T11:08:58Z\", \"ExpectedCloseDate\": \"2017-05-11T11:08:58Z\", \"ActualCloseDate\": \"2017-05-07T11:08:58Z\"}"
-		errR := ""
+		errR := nil
 		//incidentRecordJSONOld, errR := RetrieveIncident(stub, incidentRecord.IncidentID)
 
 		if (errR != nil)  {
