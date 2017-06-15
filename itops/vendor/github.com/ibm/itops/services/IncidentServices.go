@@ -56,13 +56,6 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	incidentJSON := string(incidentRecordBytes)
 	fmt.Println("Incident record is:  ", incidentJSON)
 
-	/*err1 := stub.PutState(incidentRecord.IncidentID, incidentRecordBytes)
-    	if err1 != nil {
-       	   fmt.Println("Could not save changes", err1)
-		return false, fmt.Errorf("Error in storing.")
-    	}*/
-
-
 	success1, err1 := stub.InsertRow("INCIDENT", shim.Row{
 		Columns: []*shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentID}},
@@ -289,6 +282,40 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	var columns []shim.Column
 	incidentIdColumn := shim.Column{Value: &shim.Column_String_{String_: incidentId}}
 	columns = append(columns, incidentIdColumn)
+	
+	col2 := shim.Column{Value: &shim.Column_String_{String_: "77"}}
+    	columns = append(columns, col2)	
+	
+	rowChannel, err := stub.GetRows("INCIDENT", columns)
+  	if err != nil {
+    		return "", fmt.Errorf("getRows operation failed. ")
+  	}
+	
+	var rows []shim.Row
+  	for {
+    		select {
+    			case row, ok := <-rowChannel:
+      				if !ok {
+        				rowChannel = nil
+      				} else {
+					fmt.Printf("Row - [%s]", row)
+					fmt.Printf("")
+        				rows = append(rows, row)
+      				}
+    		}
+    		if rowChannel == nil {
+     			break
+    		}
+  	}
+	
+	jsonRows, err := json.Marshal(rows)
+  	if err != nil {
+    		return nil, errors.New("getRowsTableOne operation failed. Error marshaling JSON:")
+  	}
+	
+	return string(jsonRows), nil
+	
+	/*
 	row, err := stub.GetRow("INCIDENT", columns)
 
 	if err != nil {
@@ -299,18 +326,11 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 
 	fmt.Printf("Row - [%s]", row)
 	fmt.Println()
-
+	
 	var jsonRespBuffer bytes.Buffer
 	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
 
-	return jsonRespBuffer.String(), nil
-
-	/*bytes, err := stub.GetState(incidentId)
-	if err != nil {
-		fmt.Printf("Could not fetch record with id " + incidentId + " from ledger", err)
-		return "", fmt.Errorf("Error in fetching : ", err)
-	}
-	return string(bytes), nil*/
+	return jsonRespBuffer.String(), nil*/
 
 }
 
