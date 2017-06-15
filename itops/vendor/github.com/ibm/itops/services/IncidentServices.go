@@ -77,7 +77,7 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	if (!success1) {
 		fmt.Printf("Error in creating Incident record. Row with given key already exists!")
 		fmt.Printf("Retrieving the existing record.")
-		incidentRecordJSONOld, errR := RetrieveIncident(stub, incidentRecord.incidentID)
+		incidentRecordJSONOld, errR := RetrieveIncident(stub, incidentRecord.IncidentID)
 
 		if (errR != nil)  {
 			return false, fmt.Errorf("[ITOpsChaincode]: Error in retrieving Incident record.")
