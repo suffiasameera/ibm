@@ -77,44 +77,44 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	if (!success1) {
 		fmt.Printf("Error in creating Incident record. Row with given key already exists!")
 		fmt.Printf("Retrieving the existing record.")
-		incidentRecordJSON, errR := RetrieveIncident(stub, incidentRecord.incidentID)
+		incidentRecordJSONOld, errR := RetrieveIncident(stub, incidentRecord.incidentID)
 
 		if (errR != nil)  {
 			return false, fmt.Errorf("[ITOpsChaincode]: Error in retrieving Incident record.")
 		}
 		
-		//updating it
-		success, err := UpdateIncident(stub, incidentRecord, "IncidentID")
-		if ((!success) || (err != nil)) {
-	 		return false, fmt.Errorf("Error in updating Incident record.")
-		}
-		
-		//unmarshal incidentRecordJSON into struct and using the 4 fields update them
+		//unmarshal incidentRecordJSONOld into struct and update the rows
 		var incidentRecordOld data.IncidentDO
-		unmarshalErr := json.Unmarshal([]byte(incidentRecordJSON), &incidentRecordOld)
+		unmarshalErr := json.Unmarshal([]byte(incidentRecordJSONOld), &incidentRecordOld)
 
 		if (unmarshalErr != nil) {
 			return false, fmt.Errorf("[ITOpsChaincode]: CreateIncident - Error in unmarshalling JSON string to Incident record.")
 		}
 		
-		//update them individually
+		//update the rows with the same incident record individually
 		
-		success22, err22 := UpdateIncident(stub, incidentRecord, "IncidentTitle")
+		success11, err11 := UpdateIncident(stub, incidentRecordOld, incidentRecord, "IncidentID")
+		if ((!success11) || (err11 != nil)) {
+	 		return false, fmt.Errorf("Error in updating Incident record.")
+		}
+		
+		
+		success22, err22 := UpdateIncident(stub, incidentRecordOld, incidentRecord, "IncidentTitle")
 		if ((!success22) || (err22 != nil)) {
 	 		return false, fmt.Errorf("Error in updating Incident record.")
 		}
 		
-		success33, err33 := UpdateIncident(stub, incidentRecord, "Severity")
+		success33, err33 := UpdateIncident(stub, incidentRecordOld, incidentRecord, "Severity")
 		if ((!success22) || (err22 != nil)) {
 	 		return false, fmt.Errorf("Error in updating Incident record.")
 		}
 		
-		success44, err44 := UpdateIncident(stub, incidentRecord, "Status")
+		success44, err44 := UpdateIncident(stub, incidentRecordOld, incidentRecord, "Status")
 		if ((!success22) || (err22 != nil)) {
 	 		return false, fmt.Errorf("Error in updating Incident record.")
 		}
 		
-		success55, err55 := UpdateIncident(stub, incidentRecord, "ContactEmail")
+		success55, err55 := UpdateIncident(stub, incidentRecordOld, incidentRecord, "ContactEmail")
 		if ((!success22) || (err22 != nil)) {
 	 		return false, fmt.Errorf("Error in updating Incident record.")
 		}
@@ -128,18 +128,9 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 			&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
 		},
 	})
-
-	if (err2 != nil) {
+	
+	if ((err2 != nil) || (!success2)) {
 		return false, fmt.Errorf("Error in creating Incident record.")
-	}
-
-	if (!success2) {
-		fmt.Printf("Error in creating Incident record. Row with given key already exists! Updating...")
-		success, err := UpdateIncident(stub, incidentRecord, "IncidentTitle")
-		if ((!success) || (err != nil)) {
-	 		return false, fmt.Errorf("Error in updating Incident record.")
-		}
-
 	}
 	
 	success3, err3 := stub.InsertRow("INCIDENT", shim.Row{
@@ -149,17 +140,8 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 		},
 	})	
 	
-	if (err3 != nil) {
+	if ((err3 != nil) || (!success3)) {
 		return false, fmt.Errorf("Error in creating Incident record.")
-	}
-
-	if (!success3) {
-		fmt.Printf("Error in creating Incident record. Row with given key already exists! Updating...")
-		success, err := UpdateIncident(stub, incidentRecord, "Severity")
-		if ((!success) || (err != nil)) {
-	 		return false, fmt.Errorf("Error in updating Incident record.")
-		}
-
 	}
 	
 	success4, err4 := stub.InsertRow("INCIDENT", shim.Row{
@@ -169,17 +151,8 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 		},
 	})	
 
-	if (err4 != nil) {
+	if ((err4 != nil) || (!success4)) {
 		return false, fmt.Errorf("Error in creating Incident record.")
-	}
-
-	if (!success4) {
-		fmt.Printf("Error in creating Incident record. Row with given key already exists! Updating...")
-		success, err := UpdateIncident(stub, incidentRecord, "Status")
-		if ((!success) || (err != nil)) {
-	 		return false, fmt.Errorf("Error in updating Incident record.")
-		}
-
 	}
 	
 	success5, err5 := stub.InsertRow("INCIDENT", shim.Row{
@@ -189,36 +162,26 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 		},
 	})
 	
-	if (err5 != nil) {
+	if ((err5 != nil) || (!success5)) {
 		return false, fmt.Errorf("Error in creating Incident record.")
-	}
-
-	if (!success5) {
-		fmt.Printf("Error in creating Incident record. Row with given key already exists! Updating...")
-		success, err := UpdateIncident(stub, incidentRecord, "ContactEmail")
-		if ((!success) || (err != nil)) {
-	 		return false, fmt.Errorf("Error in updating Incident record.")
-		}
-
 	}
 	
 
 	fmt.Println("Incident record created/updated. Incident Id : [%s]", string(incidentRecord.IncidentID))
 	
-	var customEvent = "{eventType: 'Creation', description:" + incidentRecord.IncidentID + "' Successfully created'}"
+	/*var customEvent = "{eventType: 'Creation', description:" + incidentRecord.IncidentID + "' Successfully created'}"
 	errE := stub.SetEvent("evtSender", []byte(customEvent))
     	if errE != nil {
 		return false, fmt.Errorf("Error in event 'create'.")
-    	}
+    	}*/
 
     	fmt.Println("Successfully saved changes")
 
 	return true, nil
 }
 
-
-func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.IncidentDO, option string) (bool, error) {
-	fmt.Println("Updating Incident record ...")
+func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecordOld data.IncidentDO, incidentRecord data.IncidentDO, option string) (bool, error) {
+	fmt.Println("Updating incident record...")
 
 	incidentRecordBytes, marshalErr := json.Marshal(incidentRecord)
 
@@ -227,41 +190,40 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	}
 
 	incidentJSON := string(incidentRecordBytes)
-	fmt.Println("Incident record is:  ", incidentJSON)
-
+		
 	switch option {
 		
 	case "IncidentID":
 		
 		success, err := stub.ReplaceRow("INCIDENT", shim.Row{
 			Columns: []*shim.Column{
-				&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentID}},
+				&shim.Column{Value: &shim.Column_String_{String_: incidentRecordOld.IncidentID}},
 				&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
 			},
 		})
 
 		if ((err != nil) || (!success)) {
 			return false, fmt.Errorf("Error in updating Incident record.")
-		}
-
+		}			
+		
 	case "IncidentTitle":
 		
 		success, err := stub.ReplaceRow("INCIDENT", shim.Row{
 			Columns: []*shim.Column{
-				&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.IncidentTitle}},
+				&shim.Column{Value: &shim.Column_String_{String_: incidentRecordOld.IncidentTitle}},
 				&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
 			},
 		})
 
 		if ((err != nil) || (!success)) {
 			return false, fmt.Errorf("Error in updating Incident record.")
-		}
-
+		}	
+		
 	case "Severity":
 		
 		success, err := stub.ReplaceRow("INCIDENT", shim.Row{
 			Columns: []*shim.Column{
-				&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.Severity}},
+				&shim.Column{Value: &shim.Column_String_{String_: incidentRecordOld.Severity}},
 				&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
 			},
 		})
@@ -269,12 +231,12 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 		if ((err != nil) || (!success)) {
 			return false, fmt.Errorf("Error in updating Incident record.")
 		}
-
+		
 	case "Status":
 		
 		success, err := stub.ReplaceRow("INCIDENT", shim.Row{
 			Columns: []*shim.Column{
-				&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.Status}},
+				&shim.Column{Value: &shim.Column_String_{String_: incidentRecordOld.Status}},
 				&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
 			},
 		})
@@ -282,12 +244,12 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 		if ((err != nil) || (!success)) {
 			return false, fmt.Errorf("Error in updating Incident record.")
 		}
-
+		
 	case "ContactEmail":
 		
 		success, err := stub.ReplaceRow("INCIDENT", shim.Row{
 			Columns: []*shim.Column{
-				&shim.Column{Value: &shim.Column_String_{String_: incidentRecord.ContactEmail}},
+				&shim.Column{Value: &shim.Column_String_{String_: incidentRecordOld.ContactEmail}},
 				&shim.Column{Value: &shim.Column_String_{String_: incidentJSON}},
 			},
 		})
@@ -299,24 +261,23 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 	default:		
 		
 		fmt.Println("Invalid option")
-		return false, fmt.Errorf("Error in updating Incident record.")
-		
+		return false, fmt.Errorf("Error in updating Incident record.")		
+	
 	}
-		
+
 	fmt.Println("Incident record updated. Incident Id : [%s]", string(incidentRecord.IncidentID))
 	
-	var customEvent = "{eventType: 'Update', description:" + incidentRecord.IncidentID + "' Successfully updated status'}"
+	/*var customEvent = "{eventType: 'Update', description:" + incidentRecord.IncidentID + "' Successfully updated status'}"
 	errE := stub.SetEvent("evtSender", []byte(customEvent))
 	if errE != nil {
 		return false, fmt.Errorf("Error in event 'update'.")
-	}
-
+	}*/
+	
 	fmt.Println("Successfully updated changes")
 
-	return true, nil
-}
-
-
+	return true, nil	
+}	
+	
 
 /*
  Retrieve Incident record
