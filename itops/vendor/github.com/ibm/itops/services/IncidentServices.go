@@ -105,17 +105,17 @@ func CreateIncident(stub shim.ChaincodeStubInterface, incidentRecord data.Incide
 		}
 		
 		success33, err33 := UpdateIncident(stub, incidentRecordOld, incidentRecord, "Severity")
-		if ((!success22) || (err22 != nil)) {
+		if ((!success33) || (err33 != nil)) {
 	 		return false, fmt.Errorf("Error in updating Incident record.")
 		}
 		
 		success44, err44 := UpdateIncident(stub, incidentRecordOld, incidentRecord, "Status")
-		if ((!success22) || (err22 != nil)) {
+		if ((!success44) || (err44 != nil)) {
 	 		return false, fmt.Errorf("Error in updating Incident record.")
 		}
 		
 		success55, err55 := UpdateIncident(stub, incidentRecordOld, incidentRecord, "ContactEmail")
-		if ((!success22) || (err22 != nil)) {
+		if ((!success55) || (err55 != nil)) {
 	 		return false, fmt.Errorf("Error in updating Incident record.")
 		}
 		
