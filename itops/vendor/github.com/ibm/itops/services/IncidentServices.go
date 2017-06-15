@@ -14,7 +14,7 @@ import (
 	"github.com/ibm/itops/data"
 )
 
-//var mapIncident = map[string]data.IncidentDO{}
+//var mapIncident = map[string]data.IncidentDO{} 
 
 
 /*
