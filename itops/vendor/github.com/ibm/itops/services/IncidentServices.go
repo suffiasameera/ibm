@@ -8,6 +8,7 @@ package services
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"encoding/json"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/ibm/itops/data"
@@ -275,21 +276,23 @@ func UpdateIncident(stub shim.ChaincodeStubInterface, incidentRecordOld data.Inc
 /*
  Retrieve Incident record
 */
-func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (string, error) {
+func RetrieveIncident(stub shim.ChaincodeStubInterface, args []string) (string, error) {
 
-	fmt.Println("Retrieving Incident record. Incident Id : [%s]", string(incidentId))
+	fmt.Println("Retrieving Incident record. Incident Id : [%s]", string(args[0]))
+	
+	for i := 0; i < len(args); i++ {
 
 	var columns []shim.Column
-	incidentIdColumn := shim.Column{Value: &shim.Column_String_{String_: incidentId}}
+	incidentIdColumn := shim.Column{Value: &shim.Column_String_{String_: args[i]}}
 	columns = append(columns, incidentIdColumn)
 	
 		
 	row, err := stub.GetRow("INCIDENT", columns)
 
 	if err != nil {
-		fmt.Printf("Error retrieving Incident record [%s]: [%s]", string(incidentId), err)
+		fmt.Printf("Error retrieving Incident record [%s]: [%s]", string(args[i]), err)
 		fmt.Println()
-		return "", fmt.Errorf("Error retrieving Incident record [%s]: [%s]", string(incidentId), err)
+		return "", fmt.Errorf("Error retrieving Incident record [%s]: [%s]", string(args[i]), err)
 	}
 
 	fmt.Printf("Row - [%s]", row)
@@ -297,41 +300,9 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	
 	var jsonRespBuffer bytes.Buffer
 	jsonRespBuffer.WriteString(row.Columns[1].GetString_())
+	}		
 
-	
-	
-	col2 := shim.Column{Value: &shim.Column_String_{String_: row.Columns[1].GetString_()}}
-    	columns = append(columns, col2)	
-	
-	rowChannel, err := stub.GetRows("INCIDENT", columns)
-  	if err != nil {
-    		return "", fmt.Errorf("getRows operation failed. ")
-  	}
-	
-	var rows []shim.Row
-  	for {
-    		select {
-    			case row, ok := <-rowChannel:
-      				if !ok {
-        				rowChannel = nil
-      				} else {
-					fmt.Printf("Row - [%s]", row)
-					fmt.Printf("")
-        				rows = append(rows, row)
-      				}
-    		}
-    		if rowChannel == nil {
-     			break
-    		}
-  	}
-	
-	jsonRows, err := json.Marshal(rows)
-  	if err != nil {
-    		return "", fmt.Errorf("getRows operation failed. Error marshaling JSON:")
-  	}
-	
-	return string(jsonRows), nil
-	
+	return "", nil
 	/*
 	row, err := stub.GetRow("INCIDENT", columns)
 
