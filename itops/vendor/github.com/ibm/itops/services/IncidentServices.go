@@ -310,7 +310,7 @@ func RetrieveIncident(stub shim.ChaincodeStubInterface, incidentId string) (stri
 	
 	jsonRows, err := json.Marshal(rows)
   	if err != nil {
-    		return "", fmt.Printf("getRows operation failed. Error marshaling JSON:")
+    		return "", fmt.Errorf("getRows operation failed. Error marshaling JSON:")
   	}
 	
 	return string(jsonRows), nil
