@@ -8,7 +8,6 @@ package services
 import (
 	"bytes"
 	"fmt"
-	//"os"
 	"encoding/json"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/ibm/itops/data"
